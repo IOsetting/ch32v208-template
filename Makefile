@@ -6,6 +6,9 @@ BUILD_DIR		= Build
 
 ##### Options #####
 
+# Include NetLib, y:yes, n:no
+USE_NET_LIB		?= y
+
 
 ##### Toolchains #######
 
@@ -37,11 +40,20 @@ ADIRS	:= User
 # ASM single files
 AFILES	:= Startup/startup_ch32v20x_D8W.S
 
+LIBS 	:= 
+
 # Include paths
 INCLUDES	:= User \
 		Core \
 		Debug \
+		NetLib \
 		Peripheral/inc
+
+ifeq ($(USE_NET_LIB),y)
+CDIRS		+= NetLib
+INCLUDES	+= NetLib
+LIBS		+= NetLib/libwchnet.a
+endif
 
 
 include ./rules.mk

@@ -23,9 +23,12 @@ CSOURCES += $(addprefix $(TOP)/, $(CFILES))
 ASOURCES := $(foreach dir, $(ADIRS), $(shell find $(TOP)/$(dir) -maxdepth 1 -name '*.s'))
 ASOURCES += $(addprefix $(TOP)/, $(AFILES))
 
-# Fill object files with c and asm files (keep source directory structure)
+LIBSOURCES := $(addprefix $(TOP)/, $(LIBS))
+
+# Fill object files with c and asm files (keep source directory structure), format: $(var:a=b)
 OBJS = $(CSOURCES:$(TOP)/%.c=$(BDIR)/%.o)
 OBJS += $(ASOURCES:$(TOP)/%.s=$(BDIR)/%.o)
+OBJS += $(LIBSOURCES)
 # d files for detecting h file changes
 DEPS=$(CSOURCES:$(TOP)/%.c=$(BDIR)/%.d)
 
