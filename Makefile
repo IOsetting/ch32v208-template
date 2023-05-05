@@ -7,7 +7,7 @@ BUILD_DIR		= Build
 ##### Options #####
 
 # Include NetLib, y:yes, n:no
-USE_NET_LIB		?= y
+USE_NET_LIB		?= n
 
 
 ##### Toolchains #######
