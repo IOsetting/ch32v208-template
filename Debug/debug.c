@@ -10,6 +10,9 @@
 * Attention: This software (modified or not) and binary are used for 
 * microcontroller manufactured by Nanjing Qinheng Microelectronics.
 *******************************************************************************/
+#include <sys/stat.h>
+#include <errno.h>
+#include <unistd.h>
 #include "debug.h"
 
 static uint8_t  p_us = 0;
@@ -188,4 +191,77 @@ void *_sbrk(ptrdiff_t incr)
 
     curbrk += incr;
     return curbrk - incr;
+}
+
+int __io_getchar (void)
+{
+    int ch;
+    while(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
+    ch =     USART_ReceiveData(USART1);
+    return (ch);
+}
+
+__attribute__((weak)) int _read(int file, char *ptr, int len)
+{
+    (void)file;
+    int DataIdx;
+    for (DataIdx = 0; DataIdx < len; DataIdx++)
+    {
+        *ptr++ = __io_getchar();
+    }
+    return len;
+}
+
+__attribute__((weak)) int _isatty(int fd)
+{
+    if (fd >= STDIN_FILENO && fd <= STDERR_FILENO)
+        return 1;
+
+    errno = EBADF;
+    return 0;
+}
+
+__attribute__((weak)) int _close(int fd)
+{
+    if (fd >= STDIN_FILENO && fd <= STDERR_FILENO)
+        return 0;
+
+    errno = EBADF;
+    return -1;
+}
+
+__attribute__((weak)) int _lseek(int fd, int ptr, int dir)
+{
+    (void)fd;
+    (void)ptr;
+    (void)dir;
+
+    errno = EBADF;
+    return -1;
+}
+
+__attribute__((weak)) int _fstat(int fd, struct stat *st)
+{
+    if (fd >= STDIN_FILENO && fd <= STDERR_FILENO)
+    {
+        st->st_mode = S_IFCHR;
+        return 0;
+    }
+
+    errno = EBADF;
+    return 0;
+}
+
+__attribute__((weak)) int _getpid(void)
+{
+  errno = ENOSYS;
+  return -1;
+}
+
+__attribute__((weak)) int _kill(pid_t pid, int sig)
+{
+    (void)pid;
+    (void)sig;
+    errno = ENOSYS;
+    return -1;
 }

@@ -12,9 +12,12 @@ USE_NET_LIB		?= y
 
 ##### Toolchains #######
 
+#GCC_TOOCHAIN	?= /opt/gcc-riscv/xpack-riscv-none-embed-gcc-10.2.0-1.2/bin
+#GCC_TOOCHAIN	?= /opt/gcc-riscv/xpack-riscv-none-elf-gcc-12.2.0-3/bin
 #GCC_TOOCHAIN	?= /opt/gcc-riscv/riscv-wch-embedded-gcc-v1.60/bin
 GCC_TOOCHAIN	?= /opt/gcc-riscv/riscv-wch-embedded-gcc-v1.70/bin
 
+GCC_PREFIX		?= riscv-none-embed-
 
 OPENOCD_PATH	?= /opt/openocd/wch-openocd-v1.70/bin
 
