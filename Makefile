@@ -44,7 +44,7 @@ CFILES :=
 # ASM source folders
 ADIRS	:= User
 # ASM single files
-AFILES	:= Libraries/Startup/startup_ch32v20x_D8W_RTOS.S
+AFILES	:= Libraries/Startup/startup_ch32v20x_D8W.S
 
 LIBS 	:= 
 
