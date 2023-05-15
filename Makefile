@@ -8,6 +8,8 @@ BUILD_DIR		= Build
 
 # Include NetLib, y:yes, n:no
 USE_NET_LIB		?= n
+# Build with FreeRTOS, y:yes, n:no
+USE_FREERTOS	?= n
 
 
 ##### Toolchains #######
@@ -17,6 +19,7 @@ USE_NET_LIB		?= n
 #GCC_TOOCHAIN	?= /opt/gcc-riscv/riscv-wch-embedded-gcc-v1.60/bin
 GCC_TOOCHAIN	?= /opt/gcc-riscv/riscv-wch-embedded-gcc-v1.70/bin
 
+# riscv-none-embed- or riscv-none-elf-
 GCC_PREFIX		?= riscv-none-embed-
 
 OPENOCD_PATH	?= /opt/openocd/wch-openocd-v1.70/bin
@@ -52,10 +55,25 @@ INCLUDES	:= User \
 		NetLib \
 		Peripheral/inc
 
+##### Optional Libraries ############
+
 ifeq ($(USE_NET_LIB),y)
 CDIRS		+= NetLib
 INCLUDES	+= NetLib
 LIBS		+= NetLib/libwchnet.a
+endif
+
+ifeq ($(USE_FREERTOS),y)
+ADIRS		+= FreeRTOS/portable/GCC/RISC-V
+
+CDIRS		+= FreeRTOS \
+			FreeRTOS/portable/GCC/RISC-V
+
+CFILES		+= FreeRTOS/portable/MemMang/heap_4.c
+
+INCLUDES	+= FreeRTOS/include \
+			FreeRTOS/portable/GCC/RISC-V \
+			FreeRTOS/portable/GCC/RISC-V/chip_specific_extensions/RV32I_PFIC_no_extensions
 endif
 
 

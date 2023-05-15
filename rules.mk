@@ -20,7 +20,7 @@ CSOURCES := $(foreach dir, $(CDIRS), $(shell find $(TOP)/$(dir) -maxdepth 1 -nam
 # Add single c source files to csources
 CSOURCES += $(addprefix $(TOP)/, $(CFILES))
 # Then assembly source folders and files
-ASOURCES := $(foreach dir, $(ADIRS), $(shell find $(TOP)/$(dir) -maxdepth 1 -name '*.s'))
+ASOURCES := $(foreach dir, $(ADIRS), $(shell find $(TOP)/$(dir) -maxdepth 1 -iname '*.s'))
 ASOURCES += $(addprefix $(TOP)/, $(AFILES))
 
 LIBSOURCES := $(addprefix $(TOP)/, $(LIBS))
@@ -93,7 +93,7 @@ $(BDIR)/%.o: %.s
 # Link object files to elf
 $(BDIR)/$(PROJECT).elf: $(OBJS) $(TOP)/$(LDSCRIPT)
 	@printf "  LD\t$@\n"
-	$(Q)$(CC) $(TGT_LDFLAGS) -T$(TOP)/$(LDSCRIPT) $(OBJS) -o $@
+	$(Q)$(CC) $(TGT_LDFLAGS) $(TGT_INCFLAGS) -T$(TOP)/$(LDSCRIPT) $(OBJS) -o $@
 
 # Convert elf to bin
 %.bin: %.elf
